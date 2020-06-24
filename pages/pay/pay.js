@@ -7,7 +7,7 @@ Page({
   data: {
     monet:0, //余额
     currentTab:3,  //选中默认的标签
-    payMoney:0
+    payMoney:10
   },
   switchNav:function(e){
     var that=this
