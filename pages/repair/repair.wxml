@@ -1,0 +1,23 @@
+<!--pages/repair/repair.wxml-->
+<!--pages/repair/repair.wxml-->
+<view class="container">
+<form bindsubmit="formSubmit">
+    <view>
+        <view class="weui-cell__bd">
+                    <input class="weui-input" name="bikeNo" placeholder="请输入车辆编号" value="{{bikeNo}}" />
+                   <button class="btn1"  bindtap="scanCode">扫码</button>
+        </view>
+        <view class="title">请选择故障类型</view> 
+
+        <checkbox-group bindchange="checkboxChange" class="choose-grids">      
+                     <checkbox value="0">锁</checkbox>
+                    <checkbox value="1">刹车</checkbox>
+                    <checkbox value="2">把套</checkbox>
+        </checkbox-group>        
+    </view>
+    <view class="weui-btn-area">
+        <button class="weui-btn" type="primary" formType="submit">确定</button>
+    </view>
+</form>
+</view>
+

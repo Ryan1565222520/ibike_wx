@@ -1,0 +1,28 @@
+{
+  "pages":[
+    "pages/index/index",
+    "pages/logs/logs",
+    "pages/register/register",
+    "pages/deposit/deposit",
+    "pages/identity/identity",
+    "pages/pay/pay",
+    "pages/repair/repair"
+
+
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "Y-Y出行",
+    "navigationBarTextStyle":"black"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "permission":{
+    "scope.userLocation":{
+      "desc":"您的地理位置信息将会在小程序中显示"
+    }
+  }
+
+
+}
