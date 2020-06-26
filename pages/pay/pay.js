@@ -23,7 +23,7 @@ Page({
   },
 
   recharge:function(){
-    var phoneNum=getApp().globalData.phoneNum
+    var phoneNum=wx.getStorageSync('phoneNum')
     if(phoneNum==null || phoneNum==""){
       wx.showToast({
         title:'您还没有登录',

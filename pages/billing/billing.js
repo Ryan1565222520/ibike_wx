@@ -119,42 +119,42 @@ endRide:function(){
       success:function(res){
         wx.setStorageSync('end_latitude', res.latitude)
         wx.setStorageSync('end_longitude', res.longitude)
+
+
+         //获取用户信息
+        var uuid=wx.getStorageSync('uuid');
+        var openid=wx.getStorageSync('openid');
+        var phoneNum=wx.getStorageSync('phoneNum');
+        var bid=wx.getStorageSync('bid')
+        wx.request({
+          url: 'http://localhost:8080/ibike/payMoney',
+          method:'POST',
+          header: { 'content-type': 'application/x-www-form-urlencoded' },
+          data:{
+            bid:bid,
+            uuid:uuid,
+            openid:openid,
+            phoneNum:phoneNum,
+            latitude: wx.getStorageSync('end_latitude'),
+            longitude: wx.getStorageSync('end_longitude'),
+            startTime:wx.getStorageSync('start_time'),
+            endTime:wx.getStorageSync('end_time'),
+            totalTime:times
+          },
+          success:function(res){
+            if(res.data.code==1){
+              wx.setStorageSync('start_time', undefined);
+              wx.setStorageSync('end_time', undefined);
+              wx.setStorageSync('bid', undefined);
+              wx.setStorageSync('end_longitude', undefined);
+              wx.setStorageSync('end_latitude', undefined);
+              wx.setStorageSync('status', 3);
+            }
+          }
+        })
       }
     });
-
-    //获取用户信息
-    var uuid=wx.getStorageSync('uuid');
-    var openid=wx.getStorageSync('openid');
-    var phoneNum=wx.getStorageSync('phoneNum');
-    var bid=wx.getStorageSync('bid')
-    wx.request({
-      url: 'http://localhost:8080/ibike/payMoney',
-      method:'POST',
-      header: { 'content-type': 'application/x-www-form-urlencoded' },
-      data:{
-        bid:bid,
-        uuid:uuid,
-        openid:openid,
-        phoneNum:phoneNum,
-        latitude: wx.getStorageSync('end_latitude'),
-        longitude: wx.getStorageSync('end_longitude'),
-        startTime:wx.getStorageSync('start_time'),
-        endTime:wx.getStorageSync('end_time'),
-        totalTime:times
-      },
-      success:function(res){
-        if(res.data.code==1){
-          wx.setStorageSync('start_time', undefined);
-          wx.setStorageSync('end_time', undefined);
-          wx.setStorageSync('bid', undefined);
-          wx.setStorageSync('end_longitude', undefined);
-          wx.setStorageSync('end_latitude', undefined);
-          wx.setStorageSync('status', 3);
-        }
-      }
-    })
-
-}
+  }
 
 })
 

@@ -183,7 +183,8 @@ Page({
           data:{
             bid:bid,
             latitude:that.data.latitude,
-            longitude:that.data.longitude
+            longitude:that.data.longitude,
+            phoneNum:wx.getStorageSync('phoneNum')
           },
           dataType:"json",
           header:{

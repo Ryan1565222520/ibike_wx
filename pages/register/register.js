@@ -48,7 +48,7 @@ Page({
     console.log('form发生了submit事件，携带数据为：', e.detail.value)
     var phoneNum=e.detail.value.phoneNum
     var verifyCode=e.detail.value.verifyCode
-    var openid=wx.getStorageSync('openids')
+    var openid=wx.getStorageSync('openid')
     wx.request({
       url: 'http://localhost:8080/ibike/verify',
       header:{'content-type':'application/x-www-form-urlencoded'},
@@ -56,7 +56,7 @@ Page({
         phoneNum:phoneNum,
         verifyCode:verifyCode,
         status:1,
-        id:openid
+        openid:openid
       },
       method:"POST",
       success:function(res){
