@@ -71,6 +71,9 @@ Page({
         }
         getApp().globalData.phoneNum=phoneNum
         getApp().globalData.status=1
+        wx.setStorageSync('phoneNum', phoneNum);
+        console.log("phoneNUm"+phoneNum)
+        wx.setStorageSync('status', 1);
         wx.navigateTo({
           url: '../deposit/deposit',
         });

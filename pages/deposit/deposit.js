@@ -29,6 +29,7 @@ Page({
           success:function(res){
             if(res.data.code==1){
               getApp().globalData.status=2
+              wx.setStorageSync('status', 2)
               wx.hideLoading();
               wx.navigateTo({
                 url: '../identity/identity',

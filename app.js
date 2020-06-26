@@ -21,6 +21,7 @@ App({
               console.log(res.data.openid)
               //保存到本地 （保存到微信）
               wx.setStorageSync("openid", res.data.openid)
+              wx.setStorageSync('status', 0)
             }
           })
         }

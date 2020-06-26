@@ -137,7 +137,8 @@ Page({
       that.mapCtx.moveToLocation();
     } else if(e.controlId==3){
       //获取全局变量status,根据它的值进行页面跳转
-      var status =getApp().globalData.status;
+      //var status =getApp().globalData.status;
+      var status=wx.getStorageSync('status')
       if( status==0){
         //跳到注册页面
         wx.navigateTo({
@@ -153,6 +154,10 @@ Page({
         });
       } else if (status == 3) {
         that.scanCode()
+      }else if(status ==4){
+        wx.navigateTo({
+          url: '../billing/billing',
+        });
       }
 
     }else if(e.controlId==4){
@@ -165,8 +170,8 @@ Page({
       });
     }
   },
-
   scanCode:function(){
+    var that=this
     wx.scanCode({
       success:function(res){
         //bid和二维码相同
@@ -185,7 +190,29 @@ Page({
             "content-type":"application/json"
           },
           success:function(res){
-            console.log(res);
+            //console.log(res);
+            if(  res.data.code==0){
+              wx.showToast({
+                title: '开锁失败,原因:'+res.data.msg,
+                icon: "none"
+              });
+              return;
+            }
+
+
+            if(res.data.code==1){
+              //在本地保存一下单车号
+              wx.setStorageSync('bid' , bid);
+              wx.setStorageSync('status', 4);   //表示当前用户正在骑行中...
+              getApp().globalData.status = 4;  //当前骑行中.
+              wx.navigateTo({
+                url: '../billing/billing?bid='+bid           
+               });
+            }else if(  getApp().globalData.status==4){    //还在骑行中.
+              wx.navigateTo({
+                url: '../billing/billing',
+              })
+            }
           }
         })
       }

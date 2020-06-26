@@ -27,6 +27,7 @@ Page({
       success:function(res){
         if(res.data.code==1){
           getApp().globalData.status=3
+          wx.setStorageSync('status', 3)
           wx.hideLoading();
           wx.navigateTo({
             url: '../index/index',
