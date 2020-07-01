@@ -1,4 +1,6 @@
 // pages/pay/pay.js
+var QQMapWX = require('../../libs/qqmap-wx-jssdk.min.js');
+var qqmapsdk;
 Page({
 
   /**
@@ -8,6 +10,12 @@ Page({
     monet:0, //余额
     currentTab:3,  //选中默认的标签
     payMoney:10
+  },
+  onLoad: function (options) {
+    //实例化API核心类
+    qqmapsdk=new QQMapWX({
+      key:"DHMBZ-54WK3-MJW3Q-37IX6-IMF5S-AOFZZ"
+    })
   },
   switchNav:function(e){
     var that=this
@@ -52,6 +60,10 @@ Page({
             method:'POST',
             success:function(res){
               if(res.data.code==1) {
+                
+                addLog(phoneNum,amount,openid);
+
+
                 wx.showModal({
                   title: '提示',
                   content: '充值成功！',
@@ -72,3 +84,52 @@ Page({
 
   }
 })
+function addLog(phoneNum,amount,openid){
+  //充值的数据埋点
+  wx.getLocation({
+    success:function(res){
+      var latitude=res.latitude;
+      var longitude=res.longitude;
+
+      //埋点：记录用户的充值的行为信息，以后做数据分析  
+      //请求腾讯地图api查找省市区
+      qqmapsdk.reverseGeocoder({
+        location: {
+          latitude: latitude,
+          longitude: longitude
+        },
+        success:function(res){
+          console.log("腾讯地图的结果"+res);
+          var address=res.result.address_component;
+          var province=address.province;
+          var city=address.city;
+          var district=address.city;
+          var street=address.street;
+          var street_number=address.street_number;
+          var dt=new Date();
+          var payTime=Date.parse(dt);
+
+          wx.request({
+            url: 'http://localhost:8080/ibike/log/addPayLog',
+            method:'POST',
+            data:{
+              openid:openid,
+              amount:amount,
+              phoneNum:phoneNum,
+              latitude:latitude,
+              longitude:longitude,
+              province:province,
+              city:city,
+              district:district,
+              street:street,
+              street_number:street_number,
+              payTime:payTime
+            }
+          })
+        }
+
+
+      })
+    }
+  })
+}

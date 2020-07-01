@@ -1,6 +1,8 @@
 //index.js
 //获取应用实例
 const app = getApp()
+var QQMapWX = require('../../libs/qqmap-wx-jssdk.min.js');
+var qqmapsdk;
 
 Page({
   /**
@@ -18,6 +20,10 @@ Page({
    */
   onLoad: function (options) {
     console.log("生命周期");
+     //实例化API核心类
+     qqmapsdk=new QQMapWX({
+      key:"DHMBZ-54WK3-MJW3Q-37IX6-IMF5S-AOFZZ"
+    })
     //1.获取当前对象的拷贝
     var that=this
     //2.创建一个地图的上下文，对地图中打的空间进行事件操作
@@ -192,7 +198,7 @@ Page({
           },
           success:function(res){
             //console.log(res);
-            if(  res.data.code==0){
+            if(  res.data.code==0){ 
               wx.showToast({
                 title: '开锁失败,原因:'+res.data.msg,
                 icon: "none"
@@ -202,6 +208,8 @@ Page({
 
 
             if(res.data.code==1){
+              wx.setStorageSync('start_latitude', that.data.latitude)
+              wx.setStorageSync('start_longitude', that.data.longitude)
               //在本地保存一下单车号
               wx.setStorageSync('bid' , bid);
               wx.setStorageSync('status', 4);   //表示当前用户正在骑行中...

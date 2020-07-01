@@ -143,9 +143,12 @@ endRide:function(){
           },
           success:function(res){
             if(res.data.code==1){
+              addlog(bid,openid,phoneNum,times);
               wx.setStorageSync('start_time', undefined);
               wx.setStorageSync('end_time', undefined);
               wx.setStorageSync('bid', undefined);
+              wx.setStorageSync('start_longitude', undefined);
+              wx.setStorageSync('start_latitude', undefined);
               wx.setStorageSync('end_longitude', undefined);
               wx.setStorageSync('end_latitude', undefined);
               wx.setStorageSync('status', 3);
@@ -157,6 +160,25 @@ endRide:function(){
   }
 
 })
+
+function addlog(bid,openid,phoneNum,times){
+  wx.request({
+    url: 'http://localhost:8080/ibike/log/addUseLog',
+    method:'POST',
+    data:{
+      opneid:openid,
+      phoneNum:phoneNum,
+      bid:bid,
+      start_latitude: wx.getStorageSync('start_latitude'),
+      start_longitude: wx.getStorageSync('start_longitude'),
+      end_latitude: wx.getStorageSync('end_latitude'),
+      end_longitude: wx.getStorageSync('end_longitude'),
+      startTime:wx.getStorageSync('start_time'),
+      endTime:wx.getStorageSync('end_time'),
+      totalTime:times
+    }
+  })
+}
 
 function dateDif(beginDate,endDate){
   var res={D:0,H:0,M:0,S:0,abs:true,error:false};
